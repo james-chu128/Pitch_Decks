@@ -167,7 +167,7 @@
       const plugins = (!EXPORT && window.RevealNotes) ? [window.RevealNotes] : [];
       Reveal.initialize({
         width: CFG.width, height: CFG.height, margin: 0, minScale: 0.1, maxScale: 4, center: false,
-        hash: !EXPORT && !CFG.preview, controls: !!CFG.preview, controlsTutorial: false, progress: !EXPORT, slideNumber: false,
+        hash: !EXPORT && !CFG.preview, controls: false, controlsTutorial: false, progress: !EXPORT, slideNumber: false,
         transition: EXPORT ? 'none' : (CFG.transition || 'fade'), transitionSpeed: 'fast', backgroundTransition: 'none',
         autoPlayMedia: EXPORT ? false : null, preloadIframes: true, viewDistance: 2,
         keyboard: { 70: () => Reveal.isOverview() || document.documentElement.requestFullscreen() },
@@ -178,6 +178,7 @@
         requestAnimationFrame(tick);
         document.title = CFG.title || document.title;
         window.__deckReady = true;
+        window.dispatchEvent(new Event('deck:ready'));
       });
     },
   };

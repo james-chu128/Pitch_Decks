@@ -1,0 +1,73 @@
+/* deck-ui.css — presenter tools (toolbar, 目錄, 備忘稿, 雷射筆). Theme-neutral: a dark glass UI that
+ * reads on every slide theme. Not part of the slide canvas; never present while exporting. */
+.deck-ui {
+  --dui-bg: rgba(18, 16, 22, .88); --dui-fg: #F3F1F5; --dui-muted: #B5AEBD; --dui-line: rgba(255, 255, 255, .14);
+  --dui-hi: #F2C14E; --dui-hover: rgba(255, 255, 255, .1);
+  font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  color: var(--dui-fg);
+}
+.deck-ui [hidden] { display: none !important; }
+
+/* ---- toolbar: bottom centre, fades in on mouse move */
+.dui-bar { position: fixed; left: 50%; bottom: 18px; transform: translate(-50%, 12px); z-index: 60; display: flex; align-items: center; gap: 4px;
+  padding: 6px 8px; border-radius: 12px; background: var(--dui-bg); border: 1px solid var(--dui-line); box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+  opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; }
+.deck-ui.dui-show .dui-bar, .dui-bar:hover, .dui-bar:focus-within { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.dui-btn { display: inline-flex; align-items: center; gap: 6px; min-width: 36px; height: 36px; padding: 0 10px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--dui-fg); font: inherit; font-size: 15px; cursor: pointer; }
+.dui-btn span { font-size: 14px; }
+.dui-btn:hover { background: var(--dui-hover); }
+.dui-btn:focus-visible { outline: 2px solid var(--dui-hi); outline-offset: 1px; }
+.dui-btn[aria-pressed="true"] { background: rgba(242, 193, 78, .18); color: var(--dui-hi); }
+.dui-sep { width: 1px; height: 22px; background: var(--dui-line); margin: 0 4px; }
+.dui-page { min-width: 72px; text-align: center; font-size: 14px; color: var(--dui-muted); font-variant-numeric: tabular-nums; }
+.dui-page b { color: var(--dui-fg); }
+.dui-dot { width: 10px; height: 10px; border-radius: 50%; background: #FF3B30; box-shadow: 0 0 6px #FF3B30; }
+
+/* ---- 目錄 panel */
+.dui-toc { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); z-index: 61; width: min(560px, calc(100vw - 32px)); max-height: min(70vh, 640px);
+  display: flex; flex-direction: column; border-radius: 14px; background: var(--dui-bg); border: 1px solid var(--dui-line); box-shadow: 0 16px 50px rgba(0, 0, 0, .45); overflow: hidden; }
+.dui-toc-head { display: flex; gap: 6px; padding: 10px; border-bottom: 1px solid var(--dui-line); }
+.dui-filter { flex: 1; height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--dui-line); background: rgba(255, 255, 255, .06); color: var(--dui-fg); font: inherit; font-size: 15px; }
+.dui-filter:focus { outline: 2px solid var(--dui-hi); outline-offset: -1px; }
+.dui-list { list-style: none; margin: 0; padding: 6px; overflow-y: auto; }
+.dui-group { padding: 10px 10px 4px; font-size: 12px; letter-spacing: .12em; color: var(--dui-hi); }
+.dui-item { width: 100%; display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: baseline; padding: 8px 10px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--dui-fg); font: inherit; font-size: 15px; text-align: left; cursor: pointer; }
+.dui-item:hover, .dui-item:focus-visible { background: var(--dui-hover); outline: none; }
+.dui-n { color: var(--dui-muted); font-variant-numeric: tabular-nums; text-align: right; }
+.dui-t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dui-id { color: var(--dui-muted); font-size: 12px; }
+
+/* reveal paints the page white around the 16:9 canvas; use a neutral dark letterbox instead */
+body.reveal-viewport { background: #0E0D11; }
+
+/* ---- 備忘稿 mode: slide left (reveal re-layouts into 66 vw), notes right */
+body.deck-notes-mode .reveal { width: 66vw !important; height: 100vh; }
+.dui-notes { position: fixed; top: 0; right: 0; bottom: 0; width: 34vw; z-index: 55; display: flex; flex-direction: column; gap: 14px; padding: 18px 20px 80px;
+  background: #121016; border-left: 1px solid var(--dui-line); }
+.dui-notes-top { display: flex; align-items: flex-end; gap: 20px; }
+.dui-timer, .dui-clock { display: flex; flex-direction: column; }
+.dui-timer { cursor: pointer; }
+.dui-timer span, .dui-clock span { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.dui-timer span { color: var(--dui-hi); }
+.dui-timer.paused span { opacity: .45; }
+.dui-timer small, .dui-clock small, .dui-notes-next small { font-size: 12px; color: var(--dui-muted); }
+.dui-notes-tools { margin-left: auto; display: flex; gap: 2px; }
+.dui-notes-cur { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.dui-notes-label { font-size: 13px; color: var(--dui-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dui-notes-text { flex: 1; min-height: 0; overflow-y: auto; line-height: 1.6; color: var(--dui-fg); padding-right: 6px; }
+.dui-notes-text em { color: var(--dui-muted); }
+.dui-notes-next { padding-top: 10px; border-top: 1px solid var(--dui-line); }
+.dui-next-title { font-size: 16px; margin-top: 2px; }
+
+/* ---- 雷射筆 */
+body.deck-laser .reveal, body.deck-laser .reveal * { cursor: none !important; }
+.dui-laser, .dui-trail { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; border-radius: 50%; }
+.dui-laser { width: 14px; height: 14px; margin: -7px 0 0 -7px; background: #FF3B30; transition: opacity .15s;
+  box-shadow: 0 0 6px 2px rgba(255, 59, 48, .9), 0 0 18px 6px rgba(255, 59, 48, .45); }
+.dui-trail { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: rgba(255, 59, 48, .55); animation: dui-fade .26s linear forwards; }
+@keyframes dui-fade { to { opacity: 0; width: 2px; height: 2px; margin: -1px 0 0 -1px; } }
+
+@media (prefers-reduced-motion: reduce) { .dui-bar { transition: none; } .dui-trail { display: none; } }
+@media print { .deck-ui { display: none !important; } }
