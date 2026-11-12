@@ -85,7 +85,12 @@
   function applyTime(st, t) {
     st.t = t;
     for (const tl of st.timelines) { try { tl.seek(t, false); } catch (e) {} }
-    if (st.sec.getAnimations) for (const an of st.sec.getAnimations({ subtree: true })) { an.pause(); an.currentTime = t * 1000; }
+    // sync only CSS keyframe animations inside the slide; leave Reveal page transitions and fragment transitions alone
+    if (st.sec.getAnimations) for (const an of st.sec.getAnimations({ subtree: true })) {
+      if (typeof CSSTransition !== 'undefined' && an instanceof CSSTransition) continue;
+      if (an.effect && an.effect.target === st.sec) continue;
+      an.pause(); an.currentTime = t * 1000;
+    }
     for (const cb of st.frameCbs) { try { cb(t); } catch (e) { console.error(e); } }
   }
 
