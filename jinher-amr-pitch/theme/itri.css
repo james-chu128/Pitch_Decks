@@ -1,0 +1,148 @@
+/* ITRI 風格 (itri) — HTML twin of ITRI_Slides_Template.potx (工研院簡報範本).
+ * Kept from the template: white ground, brand teal #00B2B3 titles (centered), Arial + 微軟正黑體,
+ * full-width teal confidentiality bar at the bottom with the page number, ITRI logo bottom-right,
+ * 限閱 RESTRICTED stamp top-right, title slide with the wordmark top-left and the grey arc mark.
+ * Kept from igvi-deck: the content grid, 16pt minimum, card / bullet / stats vocabulary, --viz-* tokens.
+ * Template images live in theme/itri/ (copied with the theme by deck.mjs). */
+:root {
+  --teal: #00B2B3; --teal-ink: #007E80; --teal-deep: #00696B; --teal-lt: #DAEDEF; --teal-lt2: #BBE0E3; --teal-wash: #F3F9FA;
+  --indigo: #333399; --navy: #2D2D8A; --night: #14183F;
+  --ink: #1A1A1A; --gray: #5F6368; --gray-lt: #9AA0A6; --line: #D5E3E5; --white: #FFFFFF;
+  --M: 59.52px; --top: 155.5px; --bottom: 84.5px; --gap: 24px;
+  --fs-title: 30pt; --fs-kicker: 12pt; --fs-body: 16pt; --fs-card-head: 17pt; --fs-sub: 18pt;
+  --fs-table: 17pt; --fs-stat: 26pt; --fs-chip: 13pt; --fs-caption: 12pt; --fs-source: 10pt; --fs-footer: 9pt;
+  --font: Arial, "Microsoft JhengHei", "微軟正黑體", "Noto Sans TC", sans-serif;
+  --radius: 10px;
+  /* tokens for JS visuals: Deck.token('--viz-accent') etc. */
+  --viz-title: #00696B; --viz-accent: #00B2B3; --viz-primary: #333399; --viz-text: #1A1A1A; --viz-muted: #5F6368;
+  --viz-node-fill: #DAEDEF; --viz-node-edge: #00B2B3; --viz-num-fill: #00B2B3; --viz-num-text: #FFFFFF;
+  --viz-grid: rgba(95,99,104,.18); --viz-bar-top: #00B2B3; --viz-bar-bottom: #007E80; --viz-label: #00696B;
+  --viz-3d-bg: #F3F9FA; --viz-3d-grid: #00B2B3; --viz-3d-grid2: #BBE0E3; --viz-metal: #333399; --viz-solid: #FFFFFF; --viz-block: #00B2B3;
+}
+html, body { background: #202124; }
+.reveal { font-family: var(--font); color: var(--ink); font-size: var(--fs-body); line-height: 1.38; }
+.reveal .slides { text-align: left; }
+.reveal .slides > section { width: 1280px; height: 720px; padding: 0; top: 0 !important; box-sizing: border-box; overflow: hidden; background: var(--white); }
+.reveal .slides > section.bg-tint { background: var(--teal-wash); }
+.reveal .slides > section.bg-dark { background: var(--night); color: var(--white); }
+.reveal .slides > section.bg-light { background: var(--white); }
+.reveal section * { box-sizing: border-box; }
+.reveal p, .reveal ul, .reveal ol { margin: 0; }
+
+/* ---- template chrome: 限閱 stamp top-right, logo bottom-right (above the bar) */
+.reveal .slides > section::before { content: ""; position: absolute; left: 1185px; top: 27px; width: 72px; height: 33px; pointer-events: none;
+  background: url("itri/restricted.png") center / contain no-repeat; }
+.reveal .slides > section::after { content: ""; position: absolute; right: 19px; top: 647px; width: 155px; height: 36px; pointer-events: none;
+  background: url("itri/logo.png") right center / contain no-repeat; }
+.reveal .slides > section.bg-dark::after { background-image: url("itri/logo-white.png"); }
+.reveal .slides > section.bg-dark::before { background-image: url("itri/restricted-white.png"); }
+.reveal .slides > section.no-stamp::before { display: none; }
+.reveal .slides > section.layout-title::after { display: none; }   /* title slide carries the wordmark instead */
+
+/* ---- head: centred brand-teal title in the template's title band (0.29–1.32 in) */
+.head { position: absolute; left: 150px; right: 150px; top: 28px; height: 99px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.kicker { color: var(--gray); font-size: var(--fs-kicker); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px; }
+.reveal h2.title { color: var(--teal); font-size: var(--fs-title); font-weight: 700; line-height: 1.2; margin: 0; text-transform: none; font-family: var(--font); text-wrap: balance; }
+.bg-dark .kicker { color: var(--teal-lt2); } .bg-dark h2.title { color: var(--teal); }
+
+/* ---- content */
+.content { position: absolute; left: var(--M); right: var(--M); top: var(--top); bottom: var(--bottom); display: flex; flex-direction: column; gap: var(--gap); }
+.has-source .content { bottom: 96px; }
+.row { display: flex; gap: var(--gap); min-height: 0; }
+.grow { flex: 1 1 0; min-height: 0; min-width: 0; }
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); flex: 1; min-height: 0; }
+.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); flex: 1; min-height: 0; }
+.cols-46 { display: grid; grid-template-columns: 4fr 6fr; gap: var(--gap); flex: 1; min-height: 0; }
+.cols-64 { display: grid; grid-template-columns: 6fr 4fr; gap: var(--gap); flex: 1; min-height: 0; }
+
+/* ---- cards: light-teal panels, teal number circles */
+.cards { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--gap); }
+.cards.stretch { flex: 1; }
+.card { background: var(--teal-lt); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card.white { background: var(--white); border: 1px solid var(--teal-lt2); }
+.card.tint { background: var(--teal-wash); border: 1px solid var(--line); }
+.bg-tint .card { background: var(--white); border: 1px solid var(--teal-lt2); }
+.bg-dark .card { background: rgba(255,255,255,.07); border: 1px solid rgba(0,178,179,.5); color: var(--white); }
+.card-top { display: flex; align-items: center; gap: 12px; }
+.num { flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--teal); color: var(--white); font-weight: 700; font-size: 15pt; display: grid; place-items: center; }
+.card-head { font-size: var(--fs-card-head); font-weight: 700; color: var(--teal-deep); line-height: 1.25; }
+.bg-dark .card-head { color: var(--teal-lt2); }
+.card p, .card li { font-size: var(--fs-body); }
+.card ul { padding-left: 1.1em; }
+
+/* ---- bullets (template: • then – ) */
+.bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.bullets li { position: relative; padding-left: 22px; font-size: var(--fs-body); }
+.bullets li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.bullets li.l2 { padding-left: 44px; } .bullets li.l2::before { left: 26px; top: .7em; width: 10px; height: 2px; border-radius: 0; background: var(--gray); }
+.bullets li.sub { padding-left: 0; font-size: var(--fs-sub); font-weight: 700; color: var(--teal-deep); margin-top: 6px; }
+.bullets li.sub::before { display: none; }
+.bg-dark .bullets li.sub { color: var(--teal-lt2); }
+
+/* ---- stats */
+.stats { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 16px; }
+.stat { background: var(--teal-wash); border: 1px solid var(--teal-lt2); border-radius: var(--radius); padding: 14px 18px; }
+.stat .v { font-size: var(--fs-stat); font-weight: 700; color: var(--teal-ink); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat .k { font-size: var(--fs-body); color: var(--gray); margin-top: 4px; }
+.bg-dark .stat { background: rgba(255,255,255,.06); border-color: rgba(0,178,179,.45); } .bg-dark .stat .v { color: var(--teal); } .bg-dark .stat .k { color: #C9D3DB; }
+
+/* ---- chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: var(--fs-chip); padding: 4px 14px; border-radius: 999px; background: var(--teal-lt); color: var(--teal-deep); font-weight: 700; }
+.chip.alt { background: #E4E4F5; color: var(--indigo); }
+
+/* ---- tables (header teal-deep so white header text reads) */
+.reveal table.tbl { border-collapse: collapse; width: 100%; font-size: var(--fs-table); }
+.tbl th { text-align: left; color: var(--white); background: var(--teal-ink); padding: 8px 12px; font-weight: 700; }
+.tbl td { padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.tbl tr:nth-child(even) td { background: var(--teal-wash); }
+
+/* ---- media */
+.video-box, .image-box { margin: 0; display: flex; flex-direction: column; min-height: 0; min-width: 0; flex: 1; }
+.video-box .frame, .image-box .frame { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.video-box video, .image-box img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; border: 1px solid var(--line); border-radius: 4px; }
+.caption { font-size: var(--fs-caption); color: var(--gray); margin-top: 6px; text-align: center; }
+.bg-dark .caption { color: #C9D3DB; }
+.play-badge { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px; background: rgba(0,105,107,.85); color: #fff; padding: 8px 16px; border-radius: 999px; font-size: 12pt; }
+.play-badge span { font-size: 18pt; } .play-badge em { font-style: normal; }
+
+.stage { position: relative; flex: 1; min-height: 0; border-radius: var(--radius); overflow: hidden; }
+.stage.framed { border: 1px solid var(--teal-lt2); background: var(--teal-wash); }
+.stage > canvas, .stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+.code { font-size: 14pt; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.code pre { margin: 0; padding: 14px 18px; font-family: Consolas, Menlo, "Liberation Mono", monospace; line-height: 1.45; white-space: pre; box-shadow: none; width: auto; }
+.code pre code { font-family: inherit; max-height: none; }
+.icon { vertical-align: middle; color: var(--teal); }
+.placeholder { flex: 1; min-height: 120px; border: 2px dashed var(--gray-lt); border-radius: var(--radius); background: #F4F6F7; display: grid; place-items: center; color: var(--gray); font-size: var(--fs-body); text-align: center; padding: 12px; }
+
+/* ---- source note (left of the logo) + the teal confidentiality bar carrying footer text and page number */
+.source { position: absolute; left: var(--M); right: 180px; top: 635.5px; font-size: var(--fs-source); color: var(--gray); }
+.bg-dark .source { color: #AEB8C2; }
+.deck-footer { position: absolute; left: 0; right: 0; top: 695px; height: 25px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between;
+  background: var(--teal); color: var(--white); font-family: var(--font); font-size: var(--fs-footer); }
+.deck-footer .pageno { font-weight: 700; }
+
+/* ---- title slide (template 標題投影片): wordmark top-left, grey arc mark bottom-right */
+.layout-title .title-block { position: absolute; inset: 0; }
+.layout-title .title-block::before { content: ""; position: absolute; left: 101px; top: 60px; width: 300px; height: 94px; background: url("itri/wordmark.png") left top / contain no-repeat; }
+.layout-title .title-block::after { content: ""; position: absolute; left: 872px; top: 314px; width: 408px; height: 406px; background: url("itri/arc.png") left top / contain no-repeat; z-index: 0; }
+.layout-title .title-block h1 { position: absolute; left: 88px; top: 272px; width: 760px; min-height: 128px; display: flex; align-items: center; margin: 0; z-index: 1;
+  font-size: 40pt; line-height: 1.15; font-weight: 700; color: var(--teal); text-transform: none; font-family: var(--font); text-wrap: balance; }
+.layout-title .title-block .kicker { position: absolute; left: 89px; top: 240px; z-index: 1; }
+.layout-title .title-block .sub { position: absolute; left: 89px; top: 420px; width: 760px; font-size: 20pt; color: var(--gray); z-index: 1; }
+.layout-title .title-block .who { position: absolute; left: 89px; top: 531px; font-size: 20pt; line-height: 1.4; color: var(--ink); z-index: 1; }
+.layout-title .title-block .date { position: absolute; left: 89px; top: 619px; font-size: 16pt; color: var(--gray); z-index: 1; }
+.bg-dark.layout-title .title-block::before { background-image: url("itri/wordmark-white.png"); }
+.bg-dark.layout-title .title-block::after { opacity: .12; }
+.bg-dark.layout-title .title-block .who { color: var(--white); }
+
+/* ---- section slide (template 區段標題): centred teal title + grey subtitle */
+.layout-section .section-block { position: absolute; left: 150px; right: 150px; top: 250px; text-align: center; }
+.layout-section .section-block .no { font-size: 15pt; color: var(--gray); font-weight: 700; letter-spacing: .14em; }
+.layout-section .section-block h1 { font-size: 36pt; margin: 8px 0 0; color: var(--teal); text-transform: none; font-family: var(--font); }
+.layout-section .section-block .sub { font-size: 20pt; color: var(--gray); margin-top: 12px; }
+.layout-full .content { inset: 0; }
+
+.reveal .fragment { transition: opacity .3s ease; }
+.reveal .fragment.visible { opacity: 1; }

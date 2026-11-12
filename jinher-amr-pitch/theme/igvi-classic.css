@@ -1,0 +1,134 @@
+/* 經典-清大紫金 (igvi-classic) — HTML twin of deckbuild/theme.js (PPTX). Spec is fixed with James; do not
+ * restyle. Canvas 1280×720 px = 13.333×7.5 in at 96 dpi, so pt sizes match the PPTX exactly.
+ * Visual language: numbered circles + rounded cards. NO decorative lines, underlines or accent bars. */
+:root {
+  --ink: #1E1024; --deep: #34163F; --purple: #6A2C8F; --mid: #8E5BB0; --soft: #F4EFF7;
+  --softer: #FAF7FC; --gold: #C9A227; --gray: #6B6270; --grayLt: #B7B0BE; --line: #E2DCE8; --white: #fff;
+  --M: 59.52px;                 /* side margin 0.62 in */
+  --top: 155.5px;               /* BODY_TOP 1.62 in */
+  --bottom: 84.5px;             /* BODY_BOT 6.62 in */
+  --gap: 24px;
+  --fs-title: 28pt; --fs-kicker: 12pt; --fs-body: 16pt; --fs-card-head: 17pt; --fs-sub: 18pt;
+  --fs-table: 17pt; --fs-stat: 26pt; --fs-chip: 13pt; --fs-caption: 12pt; --fs-source: 10pt; --fs-footer: 10pt;
+  --font: Arial, "Liberation Sans", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --font-footer: Arial, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  --radius: 14px;
+  /* tokens for JS visuals: Deck.token('--viz-accent') etc. */
+  --viz-title: #34163F; --viz-accent: #C9A227; --viz-primary: #6A2C8F; --viz-text: #1E1024; --viz-muted: #6B6270;
+  --viz-node-fill: #F4EFF7; --viz-node-edge: #8E5BB0; --viz-num-fill: #6A2C8F; --viz-num-text: #FFFFFF;
+  --viz-grid: rgba(107,98,112,.18); --viz-bar-top: #8E5BB0; --viz-bar-bottom: #6A2C8F; --viz-label: #34163F;
+  --viz-3d-bg: #34163F; --viz-3d-grid: #8E5BB0; --viz-3d-grid2: #5a3a70; --viz-metal: #C9A227; --viz-solid: #F4EFF7; --viz-block: #8E5BB0;
+}
+html, body { background: #111; }
+.reveal { font-family: var(--font); color: var(--ink); font-size: var(--fs-body); line-height: 1.35; }
+.reveal .slides { text-align: left; }
+.reveal .slides > section { width: 1280px; height: 720px; padding: 0; top: 0 !important; box-sizing: border-box; overflow: hidden; }
+.reveal .slides > section.bg-white { background: var(--white); }
+.reveal .slides > section.bg-tint  { background: var(--softer); }
+.reveal .slides > section.bg-dark  { background: var(--ink); color: var(--white); }
+.reveal section * { box-sizing: border-box; }
+.reveal p, .reveal ul, .reveal ol { margin: 0; }
+
+/* ---- head: gold uppercase kicker + purple bold title */
+.head { position: absolute; left: var(--M); right: var(--M); top: 50px; }   /* kicker y 0.52 in, title y 0.84 in */
+.kicker { color: var(--gold); font-size: var(--fs-kicker); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; line-height: 27px; margin-bottom: 4px; }
+.reveal h2.title { color: var(--purple); font-size: var(--fs-title); font-weight: 700; line-height: 1.2; margin: 0; text-transform: none; font-family: var(--font); }
+.bg-dark h2.title { color: var(--white); }
+
+/* ---- content area */
+.content { position: absolute; left: var(--M); right: var(--M); top: var(--top); bottom: var(--bottom); display: flex; flex-direction: column; gap: var(--gap); }
+.row { display: flex; gap: var(--gap); min-height: 0; }
+.grow { flex: 1 1 0; min-height: 0; min-width: 0; }
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); flex: 1; min-height: 0; }
+.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); flex: 1; min-height: 0; }
+.cols-46 { display: grid; grid-template-columns: 4fr 6fr; gap: var(--gap); flex: 1; min-height: 0; }
+.cols-64 { display: grid; grid-template-columns: 6fr 4fr; gap: var(--gap); flex: 1; min-height: 0; }
+
+/* ---- cards with numbered circle */
+.cards { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--gap); }
+.cards.stretch { flex: 1; }
+.card { background: var(--soft); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card.white { background: var(--white); border: 1px solid var(--line); }
+.card.tint { background: var(--softer); }
+.bg-dark .card { background: var(--deep); color: var(--white); }
+.card-top { display: flex; align-items: center; gap: 12px; }
+.num { flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--purple); color: var(--white); font-weight: 700; font-size: 15pt; display: grid; place-items: center; }
+.bg-dark .num { background: var(--gold); color: var(--ink); }
+.card-head { font-size: var(--fs-card-head); font-weight: 700; color: var(--deep); line-height: 1.25; }
+.bg-dark .card-head { color: var(--white); }
+.card p, .card li { font-size: var(--fs-body); }
+.card ul { padding-left: 1.1em; }
+
+/* ---- bullets: {text,bold} sub-heads + plain items */
+.bullets { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.bullets li { position: relative; padding-left: 22px; font-size: var(--fs-body); }
+.bullets li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 8px; height: 8px; border-radius: 50%; background: var(--mid); }
+.bullets li.sub { padding-left: 0; font-size: var(--fs-sub); font-weight: 700; color: var(--deep); margin-top: 6px; }
+.bullets li.sub::before { display: none; }
+.bg-dark .bullets li.sub { color: var(--gold); }
+
+/* ---- stats tiles */
+.stats { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 16px; }
+.stat { background: var(--soft); border-radius: var(--radius); padding: 14px 18px; }
+.stat .v { font-size: var(--fs-stat); font-weight: 700; color: var(--purple); line-height: 1.1; }
+.stat .k { font-size: var(--fs-body); color: var(--gray); margin-top: 4px; }
+.bg-dark .stat { background: var(--deep); } .bg-dark .stat .v { color: var(--gold); } .bg-dark .stat .k { color: #D9CFE0; }
+
+/* ---- chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: var(--fs-chip); padding: 4px 14px; border-radius: 999px; background: var(--soft); color: var(--deep); font-weight: 700; }
+.bg-dark .chip { background: var(--deep); color: var(--white); }
+
+/* ---- tables */
+.reveal table.tbl { border-collapse: collapse; width: 100%; font-size: var(--fs-table); }
+.tbl th { text-align: left; color: var(--white); background: var(--purple); padding: 8px 12px; font-weight: 700; }
+.tbl td { padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.tbl tr:nth-child(even) td { background: var(--softer); }
+
+/* ---- media: keep aspect ratio, as large as the box allows */
+.video-box, .image-box { margin: 0; display: flex; flex-direction: column; min-height: 0; min-width: 0; flex: 1; }
+.video-box .frame, .image-box .frame { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.video-box video, .image-box img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border: 1px solid var(--line); border-radius: 6px; display: block; }
+.caption { font-size: var(--fs-caption); color: var(--gray); margin-top: 6px; text-align: center; }
+.bg-dark .caption { color: #CFC4D6; }
+.play-badge { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px; background: rgba(30,16,36,.78); color: #fff; padding: 8px 16px; border-radius: 999px; font-size: 12pt; }
+.play-badge span { font-size: 18pt; } .play-badge em { font-style: normal; }
+
+/* ---- canvases for JS visuals (three.js / d3 / echarts) */
+.stage { position: relative; flex: 1; min-height: 0; border-radius: var(--radius); overflow: hidden; }
+.stage > canvas, .stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---- code (shiki, pre-highlighted) */
+.code { font-size: 14pt; border-radius: var(--radius); overflow: hidden; }
+.code pre { margin: 0; padding: 14px 18px; font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace; line-height: 1.45; white-space: pre; box-shadow: none; width: auto; }
+.code pre code { font-family: inherit; max-height: none; }
+.bg-dark .code .shiki, .bg-dark .code .shiki span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
+
+/* ---- icons, math */
+.icon { vertical-align: middle; color: var(--purple); }
+.bg-dark .icon { color: var(--gold); }
+
+/* ---- missing-asset placeholder (never generate a stand-in image) */
+.placeholder { flex: 1; min-height: 120px; border: 2px dashed #B9B0BF; border-radius: var(--radius); background: #F2F0F3; display: grid; place-items: center; color: #5E5564; font-size: var(--fs-body); text-align: center; padding: 12px; }
+
+/* ---- source note + footer */
+.source { position: absolute; left: var(--M); right: var(--M); top: 635.5px; font-size: var(--fs-source); color: var(--gray); }
+.deck-footer { position: absolute; left: var(--M); right: var(--M); top: 667px; height: 29px; align-items: center; display: flex; justify-content: space-between; font-family: var(--font-footer); font-size: var(--fs-footer); color: var(--grayLt); }   /* y 6.95 in, 10pt, grayLt — same as theme.js chrome() */
+.bg-dark .deck-footer, .bg-dark .source { color: #A99BB2; }
+
+/* ---- title & section layouts */
+.layout-title .title-block { position: absolute; left: 96px; right: 96px; top: 210px; }
+.layout-title .title-block .kicker { font-size: 15pt; }
+.layout-title .title-block h1 { font-size: 40pt; line-height: 1.15; font-weight: 700; margin: 0 0 18px; color: inherit; text-transform: none; font-family: var(--font); }
+.layout-title .title-block .sub { font-size: 20pt; color: #D9CFE0; }
+.layout-title .title-block .who { margin-top: 48px; font-size: 16pt; line-height: 1.5; }
+.bg-white.layout-title .title-block h1 { color: var(--purple); } .bg-white.layout-title .title-block .sub { color: var(--gray); }
+.layout-section .section-block { position: absolute; left: 96px; right: 96px; top: 260px; }
+.layout-section .section-block .no { font-size: 15pt; color: var(--gold); font-weight: 700; letter-spacing: .12em; }
+.layout-section .section-block h1 { font-size: 36pt; margin: 8px 0 0; color: inherit; text-transform: none; font-family: var(--font); }
+.layout-full .content { inset: 0; }
+.has-source .content { bottom: 96px; }   /* source note sits at 6.62 in */
+
+/* ---- reveal fragments: plain fade only */
+.reveal .fragment { transition: opacity .3s ease; }
+.reveal .fragment.visible { opacity: 1; }
